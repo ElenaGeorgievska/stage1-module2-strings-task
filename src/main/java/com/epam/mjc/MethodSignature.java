@@ -19,30 +19,37 @@ public class MethodSignature {
     }
 
     public String getMethodName() {
+
         return methodName;
     }
 
     public void setMethodName(String methodName) {
+
         this.methodName = methodName;
     }
 
     public String getAccessModifier() {
+
         return accessModifier;
     }
 
     public void setAccessModifier(String accessModifier) {
+
         this.accessModifier = accessModifier;
     }
 
     public String getReturnType() {
+
         return returnType;
     }
 
     public void setReturnType(String returnType) {
+
         this.returnType = returnType;
     }
 
     public List<Argument> getArguments() {
+
         return arguments;
     }
 
@@ -56,10 +63,12 @@ public class MethodSignature {
         }
 
         public String getType() {
+
             return type;
         }
 
         public void setType(String type) {
+
             this.type = type;
         }
 
@@ -68,6 +77,7 @@ public class MethodSignature {
         }
 
         public void setName(String name) {
+
             this.name = name;
         }
     }
