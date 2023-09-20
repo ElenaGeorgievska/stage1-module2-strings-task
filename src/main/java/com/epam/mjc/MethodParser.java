@@ -22,80 +22,72 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) {
-        //throw new UnsupportedOperationException("You should implement this method.");
 
+        MethodSignature signature = new MethodSignature(signatureString);
 
-       MethodSignature signature = new MethodSignature(signatureString);
+        //public void log(String logString, LogLevel level, Context context)
+        //public void log
+        String part1 = signatureString.substring(0, signatureString.indexOf("("));
+        String[] arr = part1.split(" ");
 
-        StringTokenizer str = new StringTokenizer(signatureString, " ");
+        //String logString, LogLevel level, Context context
+        String methodParameters = signatureString.substring(signatureString.indexOf("(") + 1, signatureString.lastIndexOf(")"));
+        String[] arrOfStr = methodParameters.split(",");
+        int argumentsNumber = arrOfStr.length;
+        List<MethodSignature.Argument> argumentsList = new ArrayList<>(argumentsNumber);
 
-        while (str.hasMoreTokens())
-            // Getting next tokens
-            str.nextToken();
+        if (argumentsNumber == 1 && !methodParameters.contains(",")) {
+            String[] arrOfStr2 = methodParameters.trim().split(" ");
+            //(String tre)
+            if (arrOfStr2.length == 2) {
+                argumentsList.add(new MethodSignature.Argument(arrOfStr2[0].trim(), arrOfStr2[1].trim()));
+                String[] methodName = {arr[arr.length - 1]};
+                signature = new MethodSignature(methodName[0], argumentsList);
+            //()
+            } else {
+                //parsing function with no arguments
+                String[] methodName = {arr[arr.length - 1]};
+                signature = new MethodSignature(methodName[0]);
+            }
 
-        if (str.nextToken().contains("public")) {
-            signature.setAccessModifier(str.nextToken());
-        } else if (str.nextToken().contains("private")) {
-            signature.setAccessModifier(str.nextToken());
-        } else if (str.nextToken().contains("protected")) {
-            signature.setAccessModifier(str.nextToken());
-        } else if (str.nextToken().contains("default")) {
-            signature.setAccessModifier(str.nextToken());
+        } else if (argumentsNumber > 1) {
+            for (int i = 0; i < arrOfStr.length; i++) {
+                String[] arrOfStr1 = arrOfStr[i].trim().split(" ");
+                argumentsList.add(new MethodSignature.Argument(arrOfStr1[0], arrOfStr1[1]));
+                String[] methodName = {arr[arr.length - 1]};
+                signature = new MethodSignature(methodName[0], argumentsList);
+            }
         }
-
-        if (str.nextToken().contains("int")) {
-            signature.setReturnType(str.nextToken());
-        } else if (str.nextToken().contains("double")) {
-            signature.setReturnType(str.nextToken());
-        } else if (str.nextToken().contains("long")) {
-            signature.setReturnType(str.nextToken());
-        } else if (str.nextToken().contains("float")) {
-            signature.setReturnType(str.nextToken());
-        } else if (str.nextToken().contains("string")) {
-            signature.setReturnType(str.nextToken());
-        } else if (str.nextToken().contains("char")) {
-            signature.setReturnType(str.nextToken());
-        } else if (str.nextToken().contains("boolean")) {
-            signature.setReturnType(str.nextToken());
-        } else if (str.nextToken().contains("void")) {
-            signature.setReturnType(str.nextToken());
-        }
-
 
         if (signatureString.indexOf("(") > 0) {
-            String methodName = signatureString.substring(Integer.parseInt(signature.getReturnType()), signatureString.indexOf("("));
-            //methodName = signature.getMethodName();
-            signature.setMethodName(methodName);
+            int k = 0;
+            if (arr.length == 3) {
+                signature.setAccessModifier(arr[k]);
+                signature.setReturnType(arr[k + 1]);
+                String[] methodName = {arr[arr.length - 1]};
+            } else {
+                signature.setAccessModifier(null);
+                signature.setReturnType(arr[k]);
+                String[] methodName = {arr[arr.length - 1]};
+            }
         }
-
-            //if(str.nextToken().contains("(")){
-            String methodParameters = signatureString.substring(signatureString.indexOf("(") + 1, signatureString.lastIndexOf(")"));
-
-//            if (methodParameters.length()<1){
-//                signature.getArguments();
-//            }
-//           methodParameters = signature.getArguments().get(0).getType();
-//            methodParameters = signature.getArguments().get(1).getName();
-
-
-
-
-
-
-
-
-
-        signature.setAccessModifier(str.nextToken());
-        signature.getAccessModifier();
-        signature.setReturnType(str.nextToken());
-        signature.getReturnType();
-        signature.setMethodName(str.nextToken());
-        signature.getMethodName();
-        signature.getArguments().size();
-        signature.getArguments().get(0).getType();
-        signature.getArguments().get(1).getName();
 
         return signature;
     }
 
+    public static void main(String[] args) {
+        MethodParser mp = new MethodParser();
+        String signatureString = "public void log(String logString, LogLevel level, Context context)";
+        String signatureString1 = "void log(String logString, LogLevel level, Context context)";
+        String signatureString2 = "public void log()";
+        String signatureString3 = "public void log(String logString)";
+        String signatureString4 = "public void log(String logString, Context context)";
+
+
+        mp.parseFunction(signatureString2);
+        System.out.println(mp.parseFunction(signatureString2));
+    }
+
 }
+
+

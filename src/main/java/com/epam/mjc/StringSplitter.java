@@ -20,18 +20,8 @@ public class StringSplitter {
             "m", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", " ", ".");
 
     public List<String> splitByDelimiters(String source, Collection<String> delimiters) {
-        //throw new UnsupportedOperationException("You should implement this method.");
-        //List<String> result = new ArrayList<>();
-        StringBuilder all = new StringBuilder();
-        List<String> expectedResult = new ArrayList<>();
+
         List<String> result = new ArrayList<>();
-        String current = "";
-        String source1 = "Hello Geeks. Elena, How are you";
-        Set<String> delimiters1 = new HashSet<String>();
-        delimiters1.add(",");
-        delimiters1.add(" ");
-        delimiters1.add(".");
-        //[",", " ", "."];
 
         //start solution
         StringTokenizer st1 = new StringTokenizer(
@@ -41,8 +31,18 @@ public class StringSplitter {
             result.add(st1.nextToken());
 
         return result;
+    }
 
+    public static void main(String[] args){
+        String source = "Hello Geeks. Elena, How are you";
+        Set<String> delimiters = new HashSet<String>();
+        delimiters.add(",");
+        delimiters.add(" ");
+        delimiters.add(".");
 
+        StringSplitter ss = new StringSplitter();
+        ss.splitByDelimiters(source, delimiters);
+        System.out.println(ss.splitByDelimiters(source, delimiters));
     }
 
 }
